@@ -1,0 +1,29 @@
+{
+    "manifest_version": 3,
+    "name": "SpecterVise",
+    "version": "0.0.1",
+    "description": "Hackathon chrome extension for visual bug hunting",
+    "permissions": ["activeTab", "scripting","tabs"],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["contrast_math.js", "ghost_logic.js", "content.js"],
+            "run_at": "document_idle"
+        }
+    ],
+    "commands": {
+        "run-spectervise": {
+            "suggested_key":{
+                "default": "Ctrl+Shift+Y",
+                "mac": "Command+Shift+Y"
+            },
+            "description": "Run SpecterVise"
+        }
+    },
+    "action": {
+        "default_title": "SpecterVise",
+    }
+}
