@@ -88,7 +88,7 @@ if (!style) return false;
      if (!el) return;
     try {
         el.setAttribute(MARK_ATTR,'1');
-        el.style.outline = '2px solid #bc13fe';
+        el.style.setProperty('outline', '2px solid #bc13fe','important');
         el.style.outlineOffset = '1px';
         el.style.boxShadow = '0 0 0 1px #bc13fe inset';
         el.style.setProperty('--specter-ghost-reason', reason || 'ghost');
