@@ -3,7 +3,9 @@
     "name": "SpecterVise",
     "version": "0.0.1",
     "description": "Hackathon chrome extension for visual bug hunting",
-    "permissions": ["activeTab", "scripting","tabs"],
+    "permissions": ["activeTab", "scripting","tabs","storage"],
+    "host_permissions": ["<all_urls>"],
+    "minimum_chrome_version": "110",
     "background": {
         "service_worker": "background.js"
     },
