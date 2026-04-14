@@ -56,15 +56,25 @@
     const bits = m[1].split(',').map((x) => x.trim());
     if (bits.length < 3) return null;
 
-    const r = normByte(bits[0]);
-    const g = normByte(bits[1]);
-    const b = normByte(bits[2]);
+    const r = parseRgbByte(bits[0]);
+    const g = parseRgbByte(bits[1]);
+    const b = parseRgbByte(bits[2]);
     let a = 1;
     if (bits.length > 3) a = normAlpha(bits[3]);
 
     return { r, g, b, a };
   }
 
+ function parseRgbByte(x) {
+    const s = String(x || '').trim(); 
+    if (s.endsWith('%')) {
+      const n = Number(s.replace('%', ''));
+      if (!isNum(n)) return 0;
+      return normByte((n/100) * 255);
+    }
+     return normByte(s);
+  }
+ 
   function parseHslLike(s) {
     const m = s.match(/^hsla?\(([^)]+)\)$/i);
     if (!m) return null;
