@@ -300,19 +300,28 @@
     }
   }
 
+  function runGhostScan() {
+    const ghosts = window.SpecterGhostLogic.scanForGhosts(document);
+    window.SpecterGhostLogic.markGhosts(ghosts);
+    return ghosts;
+  }
+  
+  function runContrastScan() {
+    const contrast = contrastScan(document);
+    applyContrastFails(contrast.fails);
+    return contrast;
+  }
+  
   function scanOnce() {
     const t0 = now();
 
     window.SpecterGhostLogic.clearGhostPaint(document);
     clearContrastMarks(document);
 
-    const ghosts = window.SpecterGhostLogic.scan_for_ghosts(document);
-    window.SpecterGhostLogic.markGhosts(ghosts);
+    const ghosts = runGhostScan();
+    const contrast = runContrastScan();
 
-    const contrast = contrastScan(document);
-    applyContrastFails(contrast.fails);
-
-    state.runCount += 1;
+     state.runCount += 1;
 
     const total = ghosts.length + contrast.fails.length;
     state.last = {
