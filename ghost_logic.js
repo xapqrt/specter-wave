@@ -38,20 +38,20 @@
         return false;
     }
 
-   function isHiddenViaVisibility(style) {
+   function isHiddenVisibility(style) {
 if (!style) return false;
   return style.visibility === 'hidden' || style.visibility === 'collapse';
    }
   
-    function isDisplaYNone(style) {
+    function isDisplayNone(style) {
     if (!style) return false;
     return style.display === 'none';
   }
   
-  function isGhostLike(el) {
+  function isGhostLike(style) {
    if(!style) return false;
-   if(isDisplaYNone(style)) return true;
-   if(isHiddenViaVisibility(style)) return true;
+   if(isDisplayNone(style)) return true;
+   if(isHiddenVisibility(style)) return true;
     if(isZeroOpacity(style)) return true;
     return false;
     }
@@ -66,7 +66,7 @@ if (!style) return false;
  
  
  
-    function getReason(el) {
+    function getRectSafe(el) {
     try {
         return el.getBoundingClientRect();
     } catch (e) {
@@ -79,12 +79,12 @@ if (!style) return false;
     const tag = String(el.tagName || '').toLowerCase();
   if (tag === 'script' || tag === 'style' || tag === 'meta' || tag === 'link' || tag === 'br' || tag === 'hr') return true;
   if (tag === 'svg' || tag === 'path') return false;
-  if (el.id === 'specter-hud-root') return true;
+  if (el.id === 'spectervise-hud-root') return true;
   if (el.hasAttribute('data-specter-ignore')) return true;
   return false;
     }
     
-    function painGhost(el,idx,reason) {
+    function paintGhost(el,idx,reason) {
      if (!el) return;
     try {
         el.setAttribute(MARK_ATTR,'1');
@@ -100,7 +100,7 @@ if (!style) return false;
     }
     }
     
-   function clearGhostPaint(el) {
+   function clearGhostPaint(root) {
      const scope = root || document;
      const all = scope.querySelectorAll('[' + MARK_ATTR + '="1"]');
     for(let i = 0; i < all.length; i++) {
@@ -137,10 +137,10 @@ if (!style) return false;
 
 
 
-    function scan_for_ghost(root) {
+    function scanForGhosts(root) {
         const scope = root || document;
         const nodes = normalizeNodelist(scope.querySelectorAll('*'));
-        const fond = [];
+        const found = [];
         let stale_count = 0;
 
         for (let i = 0; i < nodes.length; i++) {
@@ -196,7 +196,7 @@ if (!style) return false;
         const arr = Array.isArray(list) ? list : [];
         for (let i = 0; i < arr.length; i++) {
             const g = arr[i];
-            painGhost(g.el, i, g.reason);
+            paintGhost(g.el, i, g.reason);
         }
     }
 
@@ -224,7 +224,7 @@ if (!style) return false;
         }  
 
     window.SpecterGhostLogic = {
-       scan_for_ghosts,
+       scanForGhosts,
     markGhosts,
     clearGhostPaint,
     summarize,

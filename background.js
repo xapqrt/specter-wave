@@ -16,24 +16,24 @@ function rememberErr(msg) {
     STATE.lastError = String(msg || '');
 }
 
-function getActiveTab(cd) {
+function getActiveTab(cb) {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (chrome.runtime.lastError) {
             rememberErr(chrome.runtime.lastError.message);
-            cd(null);
+            cb(null);
             return;
         }
 
-        if (!tabs || !tabs.length === 0) {
-            cd(null);
+        if (!tabs || tabs.length === 0) {
+            cb(null);
             return;
         }
 
-        cd(tabs[0]);
+        cb(tabs[0]);
     });
 }
 
-function sendToTab(tabId, msg, cd) {
+function sendToTab(tabId, msg, cb) {
     chrome.tabs.sendMessage(tabId, msg, (resp) => {
         const err = chrome.runtime.lastError;
         if (err) {
@@ -42,7 +42,7 @@ function sendToTab(tabId, msg, cd) {
             return;
         }
 
-        cb && cb(res, null);
+        cb && cb(resp, null);
     });
 }
 
@@ -73,7 +73,7 @@ function triggerSpecterOnActiveTab(reason) {
 
  STATE.lastTab = tab.id;
    const payload = {
-        type: 'SPECTER_TOGGLE',
+        type: 'SPECTERVISE_TOGGLE',
         reason: reason || 'manual'
         t: Date.now()
     };
@@ -94,7 +94,7 @@ function scanNowOnActiveTab(reason) {
         if (!tab || !tab.id) return;
 
     const payload = {
-        type: 'SPECTER_SCAN_NOW',
+        type: 'SPECTERVISE_SCAN_NOW',
         reason: reason || 'scan-now',
         t: Date.now()
     };
@@ -118,7 +118,7 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.commands.onCommand.addListener((cmd) => {
-    if (cmd === 'run-specter') {
+    if (cmd === 'run-spectervise') {
         triggerSpecterOnActiveTab('command');
     }
 });
