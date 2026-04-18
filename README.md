@@ -1,26 +1,52 @@
-# SpecterVise 
+# spectervise
 
-**SpecterVise** is a lightweight, zero-dependency Chrome extension tailored for developers, designers, and QA engineers who need to forensically audit layouts and visual accessibility bugs in real-time.
+spectervise is a chrome extension i made lel
+it is more or less for the css guys
 
-It tracks bounding box discrepancies, hidden geometry, and contrast failures mathematically down to the hex code instantly on any page without breaking a sweat.
+if you just want to inspect a page fast and find weird hidden UI, u can js spot it easily with this
 
-##  Features
+# what it does
 
-### 1. Refactor-Vision
-Struggling with CSS Grid or fighting margin overlaps? Refactor-vision injects a 1px solid cyan boundary around every single visible node in the DOM. This gives you X-ray vision across the entire structured layout.
+### 1) refactor-vision overlay
+- press **cmd/ctrl + shift + s**
+- applies this globally:
+- '* {outline: 1px solid cyan !important;}'
+- useful when spacing, overlap, and container boundaries are hard to see
 
-### 2. Ghost Hunter
-"Ghost" geometry happens when you hide an element using methods like opacity: 0, visibility: hidden or display: none but forget they're still bloating your DOM and intercepting clicks. SpecterVise seeks out these invisible components and paints a bright, neon purple overlay exactly where they are floating.
+### 2) ghost hunter 
+- scans the dom for elements that look hidden but still occupy layout space.
 
-### 3. Contrast Sentry
-Never push unreadable text to production again. SpecterVise dynamically traces the foreground color against the computed background layer stack, resolving alpha blends to calculate the exact WCAG contrast luminance ratio. Anything dipping below 4.5 is flagged locally to you with a red dashed underline!
+flags style combos like:
+'opacity: 0'
+'visibility: hidden'
+'display: none'(plus edge conditions from stable layout)
 
----
+then it outline them in neon purple('#bc13fe') so you can spot ghost nodes instantly.
 
-##  How to Use
+### 3) contrast sentry
+run wcag luminace/contrast math against text-ish elements.
 
-1. Load unpacked extension via chrome://extensions/
-2. Open any webpage
-3. Hit Ctrl + Shift + S or click the extension Action in your toolbar.
-4. An overlay **HUD** will spawn detailing exact numeric violations found.
-5. Hit the shortcut again to disable effortlessly without reloading the page.
+if ratio '<4.5', nodes is treated as fail and get a red dashed marker.
+
+### 4) hud (top-right)
+show a quick counter panel with:
+run count
+ghost count
+contrast fail count
+total flagged
+last scan timing
+
+
+
+## how to run locally
+
+1. clone/open this repo
+2. open 'chrome://extensions'
+3. turn on **developer mode**
+4. click **load unpacked**
+5. select the respository folder
+6. open any site and press **cmd/ctrl + shift + s** or just click on the extension
+
+
+
+
