@@ -72,9 +72,9 @@ function triggerSpecterOnActiveTab(reason) {
     }
 
  STATE.lastTab = tab.id;
-   const payload = {
+    const payload = {
         type: 'SPECTERVISE_TOGGLE',
-        reason: reason || 'manual'
+        reason: reason || 'manual',
         t: Date.now()
     };
 
@@ -151,7 +151,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 setInterval(() => {
   flushQueue();
 }, 3500);
-
 
 
 
